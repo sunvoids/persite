@@ -14,7 +14,7 @@ pub async fn get(headers: HeaderMap) -> Result<impl IntoResponse, (StatusCode, S
         Ok(Html(index))
     } else {
         let full = LayoutTemplate {
-            title: "sunvoids site",
+            title: "Index",
             content: index,
             categories: &[]
         }
