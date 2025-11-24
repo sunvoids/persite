@@ -1,5 +1,8 @@
 use askama::Template;
-use axum::{http::{HeaderMap, StatusCode}, response::{Html, IntoResponse}};
+use axum::{
+    http::{HeaderMap, StatusCode},
+    response::{Html, IntoResponse},
+};
 
 use crate::routers::layout::LayoutTemplate;
 
@@ -16,11 +19,11 @@ pub async fn get(headers: HeaderMap) -> Result<impl IntoResponse, (StatusCode, S
         let full = LayoutTemplate {
             title: "Index",
             content: index,
-            categories: &[]
+            categories: &[],
         }
         .render()
         .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
-        
+
         Ok(Html(full))
     }
 }

@@ -5,7 +5,7 @@ use askama::Template;
 pub struct LayoutTemplate<'a> {
     pub title: &'a str,
     pub content: String,
-    pub categories: &'a [Category]
+    pub categories: &'a [Category],
 }
 
 pub struct Category {
