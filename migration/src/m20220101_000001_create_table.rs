@@ -26,7 +26,6 @@ impl MigrationTrait for Migration {
                     .col(string("title"))
                     .col(string("slug"))
                     .col(string("body"))
-                    .col(string("slug"))
                     .col(timestamp("created_at"))
                     .to_owned(),
             )

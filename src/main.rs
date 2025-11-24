@@ -1,6 +1,7 @@
 use std::{error::Error, time::Duration};
 
 use axum::{Router, routing::get};
+use migration::{Migrator, MigratorTrait};
 use sea_orm::{ConnectOptions, Database};
 use tower_http::{
     services::ServeDir,
@@ -32,7 +33,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .sqlx_logging(true); // TODO: change to false on release build?
     let db = Database::connect(db_connection_options).await.unwrap();
     assert!(db.ping().await.is_ok());
-
+    Migrator::up(&db, None).await.unwrap(); // This creates tables "categories" and "articles" if they do not exist. You're welcome to comment or remove if these tables exist.
     let static_files = ServeDir::new("static");
     let app = Router::new()
         .layer(
@@ -46,7 +47,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
-
+    
     db.close().await.unwrap();
     Ok(())
 }
