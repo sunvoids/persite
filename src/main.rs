@@ -17,6 +17,7 @@ mod misc;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     tracing_subscriber::fmt::init();
+    // MOVE to db::connection
     let db_info =
         misc::env_reader::read_env(".env").expect("[ERROR] Failed at reading .env file. Exiting.");
     let db_url = format!(
@@ -34,6 +35,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db = Database::connect(db_connection_options).await.unwrap();
     assert!(db.ping().await.is_ok());
     Migrator::up(&db, None).await.unwrap(); // This creates tables "categories" and "articles" if they do not exist. You're welcome to comment or remove if these tables exist.
+    // ENDMOVE to db::connection
     let static_files = ServeDir::new("static");
     let app = Router::new()
         .layer(
